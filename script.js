@@ -1,5 +1,12 @@
 // GLOBAL VARIABLES
 
+const letters = "abcdefghijklmnopqrstuvwxyz";
+const numbers = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
+const specialCharacters = "!@#$&*?";
+let password = [];
+let randy;
+
+
 let promptPasswordLength;
 let confirmCharLowercase;
 let confirmCharUppercase;
@@ -15,30 +22,66 @@ var generateBtn = document.querySelector("#generate");
 // User Prompts Function
 function askUserQuestions() {
 
-  promptPasswordLength = prompt("How many characters long do you want your password to be?");
+  promptPasswordLength = parseInt(prompt("How long do you want your password to be (please enter number between 8 and 128)?"));
 
-  confirmCharLowercase = confirm("Would you like to inlude lowercase letters in your password?");
+  if (promptPasswordLength >= 8 && promptPasswordLength <= 128) {
+    confirmCharLowercase  = confirm("Would you like to include lowercase letters in your password?");
+    confirmCharUppercase  = confirm("Would you like to include uppercase letters in your password?");
+    confirmCharNumeric    = confirm("would you like to include numeric characters in your password?");
+    confirmCharSpecial    = confirm("Would you like to include special characters in your password?");
+  }
+  else {
+    alert("Please enter a number between 8 and 128.");
 
-  confirmCharUppercase = confirm("Would you like to include uppercase letters in your password?");
+    askUserQuestions();
+  }
 
-  confirmCharNumeric = confirm("would you like to include numeric characters in your password?");
+}
 
-  confirmCharSpecial = confirm("Would you like to include special characters in your password?");
-  
+// Randomizer Function
+function randomizer(arrLength) {
+  randy = Math.floor(Math.random() * arrLength);
+  console.log(`randy: ${randy}`); 
 }
 
 // Generate Password Function
 function generatePassword() {
-  console.log("we're here");
+
+  // for loop to loop thru the promptPasswordLength
+  for (let i = 1; i <= promptPasswordLength; i++) {
+    // if CharLowercase is true, must push atleast 1 value at random into password
+    // was lowercase selected?
+    if (confirmCharLowercase) {
+      randomizer(letters.length);
+      password.push(letters[randy]);
+    }
+    // if CharUppercase is true, must push atleast 1 value at random into password
+    if (confirmCharUppercase) {
+      randomizer(letters.length);
+      password.push(letters[randy].toUpperCase());
+    }
+    // if CharNumeric is true, must push atleast 1 value at random into password
+    if (confirmCharNumeric) {
+      randomizer(numbers.length);
+      password.push(numbers[randy]);
+    }
+    // if CharSpecial is true, must push atleast 1 value at random into password
+    if (confirmCharSpecial) {
+      randomizer(specialCharacters.length);
+      password.push(specialCharacters[randy]);
+    }
+  }
+  console.log(password);
+  
 }
 
 // Write password to the #password input
 function writePassword() {
   console.log("clicked");
-  var password = generatePassword();
+  // var password = generatePassword();
   var passwordText = document.querySelector("#password");
 
-  passwordText.value = password;
+  passwordText.value = password.join("");
 
 }
 
@@ -54,6 +97,8 @@ window.addEventListener('DOMContentLoaded', (event) => {
   console.log(`uppercase: ${confirmCharUppercase}`);
   console.log(`numeric: ${confirmCharNumeric}`);
   console.log(`special: ${confirmCharSpecial}`);
+
+  generatePassword();
 
   // Add event listener to generate button
   generateBtn.addEventListener("click", writePassword);
