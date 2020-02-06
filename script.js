@@ -51,24 +51,32 @@ function generatePassword() {
   for (let i = 1; i <= promptPasswordLength; i++) {
     // if CharLowercase is true, must push atleast 1 value at random into password
     // was lowercase selected?
-    if (confirmCharLowercase) {
-      randomizer(letters.length);
-      password.push(letters[randy]);
+    if (password.length < promptPasswordLength) {
+      if (confirmCharLowercase) {
+        randomizer(letters.length);
+        password.push(letters[randy]);
+      }
     }
     // if CharUppercase is true, must push atleast 1 value at random into password
-    if (confirmCharUppercase) {
-      randomizer(letters.length);
-      password.push(letters[randy].toUpperCase());
+    if (password.length < promptPasswordLength) {
+      if (confirmCharUppercase) {
+        randomizer(letters.length);
+        password.push(letters[randy].toUpperCase());
+      }
     }
     // if CharNumeric is true, must push atleast 1 value at random into password
-    if (confirmCharNumeric) {
-      randomizer(numbers.length);
-      password.push(numbers[randy]);
+    if (password.length < promptPasswordLength) {
+      if (confirmCharNumeric) {
+        randomizer(numbers.length);
+        password.push(numbers[randy]);
+      }
     }
     // if CharSpecial is true, must push atleast 1 value at random into password
-    if (confirmCharSpecial) {
-      randomizer(specialCharacters.length);
-      password.push(specialCharacters[randy]);
+    if (password.length < promptPasswordLength) {
+      if (confirmCharSpecial) {
+        randomizer(specialCharacters.length);
+        password.push(specialCharacters[randy]);
+      }
     }
   }
   console.log(password);
