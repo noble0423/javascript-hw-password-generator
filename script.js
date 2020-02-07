@@ -1,10 +1,11 @@
 // GLOBAL VARIABLES
 
-const letters = "abcdefghijklmnopqrstuvwxyz";
+const letters = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"];
 const numbers = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
-const specialCharacters = "!@#$&*?";
+const specialCharacters = ["!", "@", "#", "$", "&", "*", "?"];
 let password = [];
 let randy;
+let possiblePasswordChars = [];
 
 
 let promptPasswordLength;
@@ -21,7 +22,6 @@ var generateBtn = document.querySelector("#generate");
 
 // User Prompts Function
 function askUserQuestions() {
-
   promptPasswordLength = parseInt(prompt("How long do you want your password to be (please enter number between 8 and 128)?"));
 
   if (promptPasswordLength >= 8 && promptPasswordLength <= 128) {
@@ -41,54 +41,41 @@ function askUserQuestions() {
 // Randomizer Function
 function randomizer(arrLength) {
   randy = Math.floor(Math.random() * arrLength);
-  console.log(`randy: ${randy}`); 
 }
 
 // Generate Password Function
 function generatePassword() {
 
-  // for loop to loop thru the promptPasswordLength
-  for (let i = 1; i <= promptPasswordLength; i++) {
-    // if CharLowercase is true, must push atleast 1 value at random into password
-    // was lowercase selected?
-    if (password.length < promptPasswordLength) {
-      if (confirmCharLowercase) {
-        randomizer(letters.length);
-        password.push(letters[randy]);
-      }
-    }
-    // if CharUppercase is true, must push atleast 1 value at random into password
-    if (password.length < promptPasswordLength) {
-      if (confirmCharUppercase) {
-        randomizer(letters.length);
-        password.push(letters[randy].toUpperCase());
-      }
-    }
-    // if CharNumeric is true, must push atleast 1 value at random into password
-    if (password.length < promptPasswordLength) {
-      if (confirmCharNumeric) {
-        randomizer(numbers.length);
-        password.push(numbers[randy]);
-      }
-    }
-    // if CharSpecial is true, must push atleast 1 value at random into password
-    if (password.length < promptPasswordLength) {
-      if (confirmCharSpecial) {
-        randomizer(specialCharacters.length);
-        password.push(specialCharacters[randy]);
-      }
-    }
+  if (confirmCharLowercase) {
+    possiblePasswordChars = possiblePasswordChars.concat(letters);
+    console.log(possiblePasswordChars);
   }
+
+  if (confirmCharUppercase) {
+    var uppercaseLetters = letters.join("").toUpperCase().split("");
+    possiblePasswordChars = possiblePasswordChars.concat(uppercaseLetters);
+  }
+
+  if (confirmCharNumeric) {
+    possiblePasswordChars = possiblePasswordChars.concat(numbers);
+  }
+
+  if (confirmCharSpecial) {
+    possiblePasswordChars = possiblePasswordChars.concat(specialCharacters);
+  }
+
+  for (let i = 0; i < promptPasswordLength; i++) {
+    randomizer(possiblePasswordChars.length);
+    password.push(possiblePasswordChars[randy]);
+  }
+
   console.log(password);
   
 }
 
 // Write password to the #password input
 function writePassword() {
-  console.log("clicked");
-  // var password = generatePassword();
   var passwordText = document.querySelector("#password");
-
   passwordText.value = password.join("");
 
 }
@@ -96,37 +83,14 @@ function writePassword() {
 
 // LOGIC
 window.addEventListener('DOMContentLoaded', (event) => {
-  console.log('DOM fully loaded and parsed');
-
   askUserQuestions();
-
-  console.log(`length: ${promptPasswordLength}`);
-  console.log(`lowercase: ${confirmCharLowercase}`);
-  console.log(`uppercase: ${confirmCharUppercase}`);
-  console.log(`numeric: ${confirmCharNumeric}`);
-  console.log(`special: ${confirmCharSpecial}`);
-
   generatePassword();
 
   // Add event listener to generate button
   generateBtn.addEventListener("click", writePassword);
   
-
-
-
 });
-// series of questions (prompts) for password criteria that user selects whether to include in the password generator or not
-  // password length prompt (must be at least 8 characters, no more than 128). 
-  // validate selection
-  
-  // char type prompts (lowercase, uppercase, numeric, and/or special characters). 
-  // validate selections
 
-  // include atleast 1 of ea type of char type that user selected
-
-// after all selections have been answered, then the password is generated that matches the selected criteria
-
-  // display password in alert or on the DOM
 
 
 
